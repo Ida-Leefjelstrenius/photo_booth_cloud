@@ -33,13 +33,6 @@ function App() {
         >
           Find Photo
         </Link>
-        <a
-          href="https://192.168.137.1:3011"
-          target="_blank"
-          style={navStyles.link}
-        >
-          Server
-        </a>
       </nav>
       <Outlet />
     </div>
