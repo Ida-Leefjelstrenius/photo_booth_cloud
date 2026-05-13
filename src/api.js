@@ -5,16 +5,13 @@ export async function uploadPhoto(dataUrl) {
   const blob = await response.blob();
   const formData = new FormData();
   formData.append('photo', blob, 'photo.png');
-
   const uploadResponse = await fetch(`${SERVER_URL}/upload`, {
     method: 'POST',
     body: formData,
   });
-
   if (!uploadResponse.ok) {
     throw new Error('Upload failed');
   }
-
   const data = await uploadResponse.json();
   return data.code;
 }
@@ -29,8 +26,8 @@ export async function getLatestPhoto() {
 export async function downloadPhoto(code) {
   const response = await fetch(`${SERVER_URL}/download/${code}`);
   if (!response.ok) throw new Error('Photo not found');
-  const blob = await response.blob();
-  return URL.createObjectURL(blob);
+  const data = await response.json();  // Changed: Get JSON instead of blob
+  return data.url;  // Changed: Return the Cloudinary URL directly
 }
 
 export async function reuploadPhoto(dataUrl) {
@@ -38,12 +35,10 @@ export async function reuploadPhoto(dataUrl) {
   const blob = await response.blob();
   const formData = new FormData();
   formData.append('photo', blob, 'photo.png');
-
   const uploadResponse = await fetch(`${SERVER_URL}/reupload`, {
     method: 'POST',
     body: formData,
   });
-
   if (!uploadResponse.ok) throw new Error('Reupload failed');
   const data = await uploadResponse.json();
   return data.code;
