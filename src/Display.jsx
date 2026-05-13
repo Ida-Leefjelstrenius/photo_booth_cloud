@@ -13,7 +13,7 @@ export default function Display() {
     getLatestPhoto().then(data => {
       if (data) {
         setCode(data.code);
-        setPhoto(`${SERVER_URL}${data.url}`);
+        setPhoto(data.url.startsWith('http') ? data.url : `${SERVER_URL}${data.url}`);
       }
     });
     
@@ -21,7 +21,7 @@ export default function Display() {
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       setCode(data.code);
-      setPhoto(`${SERVER_URL}${data.url}`);
+      setPhoto(data.url.startsWith('http') ? data.url : `${SERVER_URL}${data.url}`);
     };
     ws.onerror = (err) => {
       console.error("WebSocket error:", err);
