@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { displayStyles, styles } from "./styles";
 import { getLatestPhoto } from "./api";
 
-const SERVER_URL = "https://192.168.137.1:3011";
-const WS_URL = "wss://192.168.137.1:3011";  // wss instead of ws
+const SERVER_URL = "https://photobooth-production-0ce1.up.railway.app";
+const WS_URL = "wss://photobooth-production-0ce1.up.railway.app";  // wss instead of ws
 
 export default function Display() {
   const [photo, setPhoto] = useState(null);
