@@ -1,4 +1,4 @@
-const SERVER_URL = 'https://192.168.137.1:3011';
+const SERVER_URL = 'https://photobooth-production-0ce1.up.railway.app';
 
 export async function uploadPhoto(dataUrl) {
   const response = await fetch(dataUrl);
