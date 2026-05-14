@@ -1,6 +1,6 @@
 import { usePhoto, backgrounds } from "./PhotoContext";
 import { mergeWithBackground } from "./useMerge";
-import { styles, codeStyles, bgStyles } from "./styles";
+import { styles, codeStyles, bgStyles, displayStyles } from "./styles";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { reuploadPhoto } from "./api";
