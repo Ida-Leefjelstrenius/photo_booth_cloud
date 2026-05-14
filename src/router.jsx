@@ -31,10 +31,6 @@ const router = createBrowserRouter([
         Component: Display,
       },
       {
-        path: "find-old-picture",
-        Component: FindOldPicture,
-      },
-      {
         path: "*",
         Component: ErrorPage
       }]

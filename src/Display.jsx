@@ -7,12 +7,10 @@ const WS_URL = "wss://photobooth-production-0ce1.up.railway.app";  // wss instea
 
 export default function Display() {
   const [photo, setPhoto] = useState(null);
-  const [code, setCode] = useState(null);
   
   useEffect(() => {
     getLatestPhoto().then(data => {
       if (data) {
-        setCode(data.code);
         setPhoto(data.url.startsWith('http') ? data.url : `${SERVER_URL}${data.url}`);
       }
     });
@@ -20,7 +18,6 @@ export default function Display() {
     const ws = new WebSocket(WS_URL);
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      setCode(data.code);
       setPhoto(data.url.startsWith('http') ? data.url : `${SERVER_URL}${data.url}`);
     };
     ws.onerror = (err) => {
@@ -37,11 +34,6 @@ export default function Display() {
     ) : (
       <div style={displayStyles.content}>
       <img src={photo} alt="Latest photo" style={displayStyles.photo} />
-      <div style={displayStyles.codeBox}>
-      <p style={displayStyles.codeLabel}>Your code:</p>
-      <p style={displayStyles.code}>{code}</p>
-      <p style={displayStyles.hint}>Find you photo with the code </p>
-      </div>
       </div>
     )}
     </div>

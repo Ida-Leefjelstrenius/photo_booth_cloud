@@ -24,15 +24,6 @@ function App() {
         >
           Display
         </Link>
-        <Link
-          to="/find-old-picture"
-          style={{
-            ...navStyles.link,
-            ...(location.pathname === '/find-old-picture' ? navStyles.active : {})
-          }}
-        >
-          Find Photo
-        </Link>
       </nav>
       <Outlet />
     </div>

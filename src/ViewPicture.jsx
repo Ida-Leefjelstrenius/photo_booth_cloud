@@ -22,7 +22,7 @@ export default function ViewPicture() {
         // Upload with new code so display and get-photo both work
         try {
             const newCode = await reuploadPhoto(dataUrl);
-            navigate(`/view-picture?code=${newCode}`, { replace: true });
+            navigate(`/view-picture?`, { replace: true });
         } catch (err) {
             console.error("Reupload failed:", err);
         }
@@ -70,15 +70,7 @@ export default function ViewPicture() {
         ) : (
             <p>No photo available.</p>
         )}
-        
-        {/* Code */}
-        {code && (
-            <div style={codeStyles.box}>
-            <p style={codeStyles.label}>Your code:</p>
-            <p style={codeStyles.code}>{code}</p>
-            <p style={codeStyles.hint}>Find you photo with the code </p>
-            </div>
-        )}        
+               
         <div>
         <button style={styles.bigButton} onClick={() => navigate("/")}>
         Take Another Photo
