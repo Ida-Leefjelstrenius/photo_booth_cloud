@@ -179,7 +179,7 @@ export const displayStyles = {
     fontSize: "48px",
     fontWeight: "bold",
     color: "#FFD700",
-    marginBottom: "40px",
+    marginBottom: "60px",
     position: "absolute",
     top: "60px",
   },
@@ -252,4 +252,56 @@ export const bgStyles = {
     borderRadius: "8px",
     cursor: "pointer",
   },
+};
+
+const infoStyles = {
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '16px',
+    position: 'relative',
+  },
+  infoButton: {
+    background: 'none',
+    border: 'none',
+    fontSize: '24px',
+    cursor: 'pointer',
+    padding: '8px',
+    borderRadius: '50%',
+    transition: 'background-color 0.2s',
+    ':hover': {
+      backgroundColor: '#f0f0f0',
+    }
+  },
+  infoBox: {
+    backgroundColor: '#fff3cd',
+    border: '2px solid #ffc107',
+    borderRadius: '12px',
+    padding: '20px',
+    margin: '20px auto',
+    maxWidth: '500px',
+    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+  },
+  infoTitle: {
+    margin: '0 0 12px 0',
+    fontSize: '20px',
+    color: '#333',
+  },
+  infoText: {
+    margin: '8px 0',
+    fontSize: '16px',
+    color: '#555',
+    lineHeight: '1.5',
+  },
+  closeButton: {
+    marginTop: '16px',
+    padding: '8px 16px',
+    backgroundColor: '#ffc107',
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    fontWeight: 'bold',
+  }
 };
