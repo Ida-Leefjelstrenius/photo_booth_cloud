@@ -254,7 +254,7 @@ export const bgStyles = {
   },
 };
 
-const infoStyles = {
+export const infoStyles = {
   header: {
     display: 'flex',
     alignItems: 'center',

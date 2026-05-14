@@ -29,8 +29,16 @@ export default function Display() {
   
   return (
     <div style={displayStyles.container}>
-      <div style={infoStyles.header}>
-        <h1 style={displayStyles.heading}>The most recent photo:</h1>
+      <div style={{
+        position: 'absolute',
+        top: '60px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '16px'
+      }}>
+        <h1 style={{...displayStyles.heading, position: 'relative', top: 0, marginBottom: 0}}>
+          The most recent photo
+        </h1>
         <button 
           style={infoStyles.infoButton}
           onClick={() => setShowInfo(!showInfo)}
@@ -41,7 +49,7 @@ export default function Display() {
       </div>
       
       {showInfo && (
-        <div style={infoStyles.infoBox}>
+        <div style={{...infoStyles.infoBox, position: 'absolute', top: '150px', zIndex: 10}}>
           <h3 style={infoStyles.infoTitle}>Photo Storage Information</h3>
           <p style={infoStyles.infoText}>
             🔒 Photos are kept for 48 hours and then automatically deleted.
