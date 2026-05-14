@@ -39,7 +39,7 @@ export default function ViewPicture() {
     
     return (
         <div style={styles.body}>
-        <h1 style={styles.h1}>Your Photo</h1>
+        <h1 style={displayStyles.heading}>Your Photo</h1>
         
         {/* Background selector */}
         <div style={bgStyles.container}>

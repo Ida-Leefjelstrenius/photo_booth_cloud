@@ -192,13 +192,14 @@ export const displayStyles = {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: "40px",
     gap: "40px",
   },
   photo: {
     maxHeight: "80vh",
     maxWidth: "70vw",
     objectFit: "contain",
-    marginTop: "30px",
+    marginTop: "40px",
   },
   codeBox: {
     textAlign: "center",
@@ -265,7 +266,7 @@ export const infoStyles = {
   infoButton: {
     background: 'none',
     border: 'none',
-    fontSize: '24px',
+    fontSize: '40px',
     cursor: 'pointer',
     padding: '8px',
     borderRadius: '50%',

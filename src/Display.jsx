@@ -29,27 +29,26 @@ export default function Display() {
   
   return (
     <div style={displayStyles.container}>
-      <div style={{
-        position: 'absolute',
-        top: '60px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '16px'
-      }}>
-        <h1 style={{...displayStyles.heading, position: 'relative', top: 0, marginBottom: 0}}>
-          The most recent photo
-        </h1>
-        <button 
-          style={infoStyles.infoButton}
-          onClick={() => setShowInfo(!showInfo)}
-          title="Storage information"
-        >
-          ℹ️
-        </button>
-      </div>
+      <h1 style={displayStyles.heading}>The most recent photo</h1>
+      
+      {!photo ? (
+        <p style={displayStyles.noPhoto}>No photo taken yet</p>
+      ) : (
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+          <img src={photo} alt="Latest photo" style={displayStyles.photo} />
+          
+          <button 
+            style={{...infoStyles.infoButton, marginTop: '20px'}}
+            onClick={() => setShowInfo(!showInfo)}
+            title="Storage information"
+          >
+            ℹ️
+          </button>
+        </div>
+      )}
       
       {showInfo && (
-        <div style={{...infoStyles.infoBox, position: 'absolute', top: '150px', zIndex: 10}}>
+        <div style={{...infoStyles.infoBox, position: 'absolute', bottom: '40px', zIndex: 10}}>
           <h3 style={infoStyles.infoTitle}>Photo Storage Information</h3>
           <p style={infoStyles.infoText}>
             🔒 Photos are kept for 48 hours and then automatically deleted.
@@ -60,14 +59,6 @@ export default function Display() {
           >
             Close
           </button>
-        </div>
-      )}
-      
-      {!photo ? (
-        <p style={displayStyles.noPhoto}>No photo taken yet</p>
-      ) : (
-        <div style={displayStyles.content}>
-          <img src={photo} alt="Latest photo" style={displayStyles.photo} />
         </div>
       )}
     </div>
