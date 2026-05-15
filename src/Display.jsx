@@ -29,38 +29,40 @@ export default function Display() {
   
   return (
     <div style={displayStyles.container}>
+    {!photo ? (
+      <>
       <h1 style={displayStyles.heading}>The most recent photo</h1>
+      <p style={displayStyles.noPhoto}>No photo taken yet</p>
+      </>
+    ) : (
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      <h1 style={displayStyles.heading}>The most recent photo</h1>
+      <img src={photo} alt="Latest photo" style={displayStyles.photo} />
       
-      {!photo ? (
-        <p style={displayStyles.noPhoto}>No photo taken yet</p>
-      ) : (
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <img src={photo} alt="Latest photo" style={displayStyles.photo} />
-          
-          <button 
-            style={{...infoStyles.infoButton, marginTop: '20px'}}
-            onClick={() => setShowInfo(!showInfo)}
-            title="Storage information"
-          >
-            ℹ️
-          </button>
-        </div>
-      )}
-      
-      {showInfo && (
-        <div style={{...infoStyles.infoBox, position: 'absolute', bottom: '40px', zIndex: 10}}>
-          <h3 style={infoStyles.infoTitle}>Photo Storage Information</h3>
-          <p style={infoStyles.infoText}>
-            🔒 Photos are kept for 48 hours and then automatically deleted.
-          </p>
-          <button 
-            style={infoStyles.closeButton}
-            onClick={() => setShowInfo(false)}
-          >
-            Close
-          </button>
-        </div>
-      )}
+      <button 
+      style={{...infoStyles.infoButton, marginTop: '20px'}}
+      onClick={() => setShowInfo(!showInfo)}
+      title="Storage information"
+      >
+      ℹ️
+      </button>
+      </div>
+    )}
+    
+    {showInfo && (
+      <div style={{...infoStyles.infoBox, position: 'absolute', bottom: '40px', zIndex: 10}}>
+      <h3 style={infoStyles.infoTitle}>Photo Storage Information</h3>
+      <p style={infoStyles.infoText}>
+      🔒 Photos are kept for 48 hours and then automatically deleted.
+      </p>
+      <button 
+      style={infoStyles.closeButton}
+      onClick={() => setShowInfo(false)}
+      >
+      Close
+      </button>
+      </div>
+    )}
     </div>
   );
 }

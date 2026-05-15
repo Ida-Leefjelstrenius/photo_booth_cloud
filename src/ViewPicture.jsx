@@ -39,46 +39,46 @@ export default function ViewPicture() {
     
     return (
         <div style={styles.body}>
-        <h1 style={displayStyles.heading}>Your Photo</h1>
-        
-        {/* Background selector */}
-        <div style={bgStyles.container}>
-        <p style={bgStyles.label}> Try another background </p>
-        <div style={bgStyles.grid}>
-        {backgrounds.map((bg, index) => (
-            <img
-            key={index}
-            src={bg.src}
-            alt={bg.name}
-            onClick={() => changeBg(index)}
-            style={{
-                ...bgStyles.thumbnail,
-                border: selectedBg === index
-                ? "3px solid #FFD700"
-                : "3px solid transparent",
-                opacity: remerging ? 0.5 : 1,
-            }}
-            />
-        ))}
-        </div>
-        </div>
-        
-        {remerging ? (
-            <p>Applying background...</p>
-        ) : mergedPhoto ? (
-            <img src={mergedPhoto} alt="Merged photo" style={styles.media} />
-        ) : (
-            <p>No photo available.</p>
-        )}
-               
-        <div>
-        <button style={styles.bigButton} onClick={() => navigate("/")}>
-        Take Another Photo
-        </button>
-        <button style={styles.bigButton} onClick={downloadPhoto}>
-        Download Picture 
-        </button>
-        </div>
+            <h1 style={{...displayStyles.heading, textAlign: 'center'}}>Your Photo</h1>
+            
+            {/* Background selector */}
+            <div style={bgStyles.container}>
+                <p style={bgStyles.label}>Try another background</p>
+                <div style={bgStyles.grid}>
+                    {backgrounds.map((bg, index) => (
+                        <img
+                            key={index}
+                            src={bg.src}
+                            alt={bg.name}
+                            onClick={() => changeBg(index)}
+                            style={{
+                                ...bgStyles.thumbnail,
+                                border: selectedBg === index
+                                    ? "3px solid #FFD700"
+                                    : "3px solid transparent",
+                                opacity: remerging ? 0.5 : 1,
+                            }}
+                        />
+                    ))}
+                </div>
+            </div>
+            
+            {remerging ? (
+                <p>Applying background...</p>
+            ) : mergedPhoto ? (
+                <img src={mergedPhoto} alt="Merged photo" style={styles.media} />
+            ) : (
+                <p>No photo available.</p>
+            )}
+                   
+            <div style={styles.actionButtons}>
+                <button style={styles.bigSecondaryButton} onClick={() => navigate("/")}>
+                    Take Another Photo
+                </button>
+                <button style={styles.bigPrimaryButton} onClick={downloadPhoto}>
+                    Download Picture 
+                </button>
+            </div>
         </div>
     );
 }

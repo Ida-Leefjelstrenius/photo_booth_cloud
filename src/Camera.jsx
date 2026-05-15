@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { styles } from "./styles";
+import { styles, displayStyles } from "./styles";
 import { usePhoto } from "./PhotoContext";
 import { mergeWithBackground } from "./useMerge";
 import { uploadPhoto } from "./api";
@@ -91,7 +91,7 @@ export default function Camera() {
 
   return (
     <div style={styles.body}>
-      <h1 style={styles.h1}>Camera Access and Photo Capture</h1>
+      <h1 style={displayStyles.heading}>Take a picture</h1>
 
       {error && <p style={styles.error}>{error}</p>}
 
