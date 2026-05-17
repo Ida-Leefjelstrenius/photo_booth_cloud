@@ -1,9 +1,12 @@
 import { usePhoto, backgrounds } from "./PhotoContext";
 import { mergeWithBackground } from "./useMerge";
-import { styles, codeStyles, bgStyles, displayStyles } from "./styles";
+import { styles, emailStyles, codeStyles, bgStyles, displayStyles } from "./styles";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { reuploadPhoto } from "./api";
+
+
+const SERVER_URL = 'https://photobooth-production-0ce1.up.railway.app';
 
 export default function ViewPicture() {
     const { mergedPhoto, setMergedPhoto, selectedBg, setSelectedBg, rawPhotoData } = usePhoto();
@@ -11,6 +14,9 @@ export default function ViewPicture() {
     const [searchParams] = useSearchParams();
     const code = searchParams.get("code");
     const [remerging, setRemerging] = useState(false);
+    const [email, setEmail] = useState("");
+    const [sending, setSending] = useState(false);
+    const [sendStatus, setSendStatus] = useState(null);
     
     const changeBg = async (index) => {
         if (!rawPhotoData) return;
@@ -19,7 +25,6 @@ export default function ViewPicture() {
         const dataUrl = await mergeWithBackground(rawPhotoData, index);
         setMergedPhoto(dataUrl);
         
-        // Upload with new code so display and get-photo both work
         try {
             const newCode = await reuploadPhoto(dataUrl);
             navigate(`/view-picture?`, { replace: true });
@@ -28,6 +33,40 @@ export default function ViewPicture() {
         }
         
         setRemerging(false);
+    };
+    
+    const sendToEmail = async () => {
+        if (!email || !email.includes('@')) {
+            setSendStatus('Please enter a valid email address');
+            return;
+        }
+        
+        setSending(true);
+        setSendStatus(null);
+        
+        try {
+            const response = await fetch(`${SERVER_URL}/send-email`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email,
+                    photoUrl: mergedPhoto,
+                    code: code
+                })
+            });
+            
+            if (response.ok) {
+                setSendStatus('Photo sent to your email!');
+                setEmail('');
+            } else {
+                setSendStatus('Failed to send email. Please try again.');
+            }
+        } catch (err) {
+            console.error('Send email error:', err);
+            setSendStatus('Error sending email. Please try again.');
+        }
+        
+        setSending(false);
     };
     
     const downloadPhoto = () => {
@@ -70,6 +109,28 @@ export default function ViewPicture() {
             ) : (
                 <p>No photo available.</p>
             )}
+            
+            {/* Email input section */}
+            <div style={emailStyles.container}>
+                <p style={emailStyles.label}>Get your photo by email:</p>
+                <div style={emailStyles.inputGroup}>
+                    <input
+                        type="email"
+                        placeholder="your.email@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        style={emailStyles.input}
+                    />
+                    <button 
+                        style={styles.bigPrimaryButton}
+                        onClick={sendToEmail}
+                        disabled={sending}
+                    >
+                        {sending ? 'Sending...' : 'Send'}
+                    </button>
+                </div>
+                {sendStatus && <p style={emailStyles.status}>{sendStatus}</p>}
+            </div>
                    
             <div style={styles.actionButtons}>
                 <button style={styles.bigSecondaryButton} onClick={() => navigate("/")}>

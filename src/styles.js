@@ -306,3 +306,36 @@ export const infoStyles = {
     fontWeight: 'bold',
   }
 };
+
+export const emailStyles = {
+    container: {
+        marginTop: '30px',
+        marginBottom: '20px',
+        textAlign: 'center',
+    },
+    label: {
+        fontSize: '18px',
+        color: '#666',
+        marginBottom: '12px',
+    },
+    inputGroup: {
+        display: 'flex',
+        gap: '12px',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+    },
+    input: {
+        fontSize: '16px',
+        padding: '12px 16px',
+        borderRadius: '8px',
+        border: '2px solid #ccc',
+        width: '300px',
+        maxWidth: '90%',
+    },
+    status: {
+        marginTop: '12px',
+        fontSize: '16px',
+        fontWeight: 'bold',
+    }
+};

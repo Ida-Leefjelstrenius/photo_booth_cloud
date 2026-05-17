@@ -5,6 +5,8 @@ import { v2 as cloudinary } from 'cloudinary';
 import { WebSocketServer } from 'ws';
 import { createServer } from 'http';
 import dotenv from 'dotenv';
+import sgMail from '@sendgrid/mail';  // Add this import
+
 dotenv.config();
 
 const app = express();
@@ -19,6 +21,9 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
+// Initialize SendGrid
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const photoCodes = new Map();
 
@@ -38,7 +43,6 @@ function notifyDisplayScreens(code, url) {
   });
 }
 
-// Use memory storage — upload buffer directly to Cloudinary
 const upload = multer({ storage: multer.memoryStorage() });
 
 async function uploadToCloudinary(buffer) {
@@ -69,18 +73,16 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
   try {
     const result = await uploadToCloudinary(req.file.buffer);
     const code = generateCode();
-
     photoCodes.set(code, {
       url: result.secure_url,
       publicId: result.public_id
     });
-
-    // Auto-delete after 48 hours
+    
     setTimeout(() => {
       deleteFromCloudinary(result.public_id);
       photoCodes.delete(code);
     }, 48 * 60 * 60 * 1000);
-
+    
     console.log(`New photo uploaded with code: ${code}`);
     notifyDisplayScreens(code, result.secure_url);
     res.json({ code });
@@ -94,17 +96,16 @@ app.post('/reupload', upload.single('photo'), async (req, res) => {
   try {
     const result = await uploadToCloudinary(req.file.buffer);
     const code = generateCode();
-
     photoCodes.set(code, {
       url: result.secure_url,
       publicId: result.public_id
     });
-
+    
     setTimeout(() => {
       deleteFromCloudinary(result.public_id);
       photoCodes.delete(code);
     }, 48 * 60 * 60 * 1000);
-
+    
     console.log(`Re-uploaded with new code: ${code}`);
     notifyDisplayScreens(code, result.secure_url);
     res.json({ code });
@@ -129,6 +130,29 @@ app.get('/latest', (req, res) => {
   const lastCode = [...photoCodes.keys()].at(-1);
   const entry = photoCodes.get(lastCode);
   res.json({ code: lastCode, url: entry.url });
+});
+
+// Add the email sending route here
+app.post('/send-email', async (req, res) => {
+  const { email, photoUrl, code } = req.body;
+  
+  try {
+    await sgMail.send({
+      to: email,
+      from: 'noreply@yourdomain.com', // Change this to your verified sender email
+      subject: 'Your Photo Booth Picture',
+      html: `
+        <h2>Here's your photo!</h2>
+        <p>Your photo code: <strong>${code}</strong></p>
+        <img src="${photoUrl}" style="max-width: 600px;" />
+      `
+    });
+    
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Email send error:', err);
+    res.status(500).json({ error: 'Failed to send email' });
+  }
 });
 
 const PORT = process.env.PORT || 3012;
