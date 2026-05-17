@@ -45,12 +45,19 @@ export default function ViewPicture() {
         setSendStatus(null);
         
         try {
+            // Get the code from search params
+            const code = searchParams.get("code");
+            
+            // Fetch the Cloudinary URL from the backend
+            const photoResponse = await fetch(`${SERVER_URL}/download/${code}`);
+            const photoData = await photoResponse.json();
+            
             const response = await fetch(`${SERVER_URL}/send-email`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     email: email,
-                    photoUrl: mergedPhoto,
+                    photoUrl: photoData.url,  // Use Cloudinary URL instead of base64
                     code: code
                 })
             });
@@ -78,68 +85,68 @@ export default function ViewPicture() {
     
     return (
         <div style={styles.body}>
-            <h1 style={{...displayStyles.heading, textAlign: 'center'}}>Your Photo</h1>
-            
-            {/* Background selector */}
-            <div style={bgStyles.container}>
-                <p style={bgStyles.label}>Try another background</p>
-                <div style={bgStyles.grid}>
-                    {backgrounds.map((bg, index) => (
-                        <img
-                            key={index}
-                            src={bg.src}
-                            alt={bg.name}
-                            onClick={() => changeBg(index)}
-                            style={{
-                                ...bgStyles.thumbnail,
-                                border: selectedBg === index
-                                    ? "3px solid #FFD700"
-                                    : "3px solid transparent",
-                                opacity: remerging ? 0.5 : 1,
-                            }}
-                        />
-                    ))}
-                </div>
-            </div>
-            
-            {remerging ? (
-                <p>Applying background...</p>
-            ) : mergedPhoto ? (
-                <img src={mergedPhoto} alt="Merged photo" style={styles.media} />
-            ) : (
-                <p>No photo available.</p>
-            )}
-            
-            {/* Email input section */}
-            <div style={emailStyles.container}>
-                <p style={emailStyles.label}>Get your photo by email:</p>
-                <div style={emailStyles.inputGroup}>
-                    <input
-                        type="email"
-                        placeholder="your.email@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        style={emailStyles.input}
-                    />
-                    <button 
-                        style={styles.bigPrimaryButton}
-                        onClick={sendToEmail}
-                        disabled={sending}
-                    >
-                        {sending ? 'Sending...' : 'Send'}
-                    </button>
-                </div>
-                {sendStatus && <p style={emailStyles.status}>{sendStatus}</p>}
-            </div>
-                   
-            <div style={styles.actionButtons}>
-                <button style={styles.bigSecondaryButton} onClick={() => navigate("/")}>
-                    Take Another Photo
-                </button>
-                <button style={styles.bigPrimaryButton} onClick={downloadPhoto}>
-                    Download Picture 
-                </button>
-            </div>
+        <h1 style={{...displayStyles.heading, textAlign: 'center'}}>Your Photo</h1>
+        
+        {/* Background selector */}
+        <div style={bgStyles.container}>
+        <p style={bgStyles.label}>Try another background</p>
+        <div style={bgStyles.grid}>
+        {backgrounds.map((bg, index) => (
+            <img
+            key={index}
+            src={bg.src}
+            alt={bg.name}
+            onClick={() => changeBg(index)}
+            style={{
+                ...bgStyles.thumbnail,
+                border: selectedBg === index
+                ? "3px solid #FFD700"
+                : "3px solid transparent",
+                opacity: remerging ? 0.5 : 1,
+            }}
+            />
+        ))}
+        </div>
+        </div>
+        
+        {remerging ? (
+            <p>Applying background...</p>
+        ) : mergedPhoto ? (
+            <img src={mergedPhoto} alt="Merged photo" style={styles.media} />
+        ) : (
+            <p>No photo available.</p>
+        )}
+        
+        {/* Email input section */}
+        <div style={emailStyles.container}>
+        <p style={emailStyles.label}>Get your photo by email:</p>
+        <div style={emailStyles.inputGroup}>
+        <input
+        type="email"
+        placeholder="your.email@example.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        style={emailStyles.input}
+        />
+        <button 
+        style={styles.bigPrimaryButton}
+        onClick={sendToEmail}
+        disabled={sending}
+        >
+        {sending ? 'Sending...' : 'Send'}
+        </button>
+        </div>
+        {sendStatus && <p style={emailStyles.status}>{sendStatus}</p>}
+        </div>
+        
+        <div style={styles.actionButtons}>
+        <button style={styles.bigSecondaryButton} onClick={() => navigate("/")}>
+        Take Another Photo
+        </button>
+        <button style={styles.bigPrimaryButton} onClick={downloadPhoto}>
+        Download Picture 
+        </button>
+        </div>
         </div>
     );
 }
