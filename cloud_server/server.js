@@ -134,27 +134,33 @@ app.get('/latest', (req, res) => {
 
 // Add the email sending route here
 app.post('/send-email', async (req, res) => {
-  const { email, photoUrl, code } = req.body;
-  
+  const { email, photoUrl } = req.body;
+
   try {
-    await sgMail.send({
+
+    const msg = {
       to: email,
       from: 'idalee.fjelstrenius@gmail.com',
-      subject: 'Your Photo Booth Picture', //<p>Your photo code: <strong>${code}</strong></p>
+      subject: 'Your Photo Booth Picture',
       html: `
         <h2>Here's your photo!</h2>
         <img src="${photoUrl}" style="max-width: 600px;" />
       `
-    });
-    
-    res.json({ success: true });
-  } catch (err) {
-    console.error('Email send error:', err);
-    res.status(500).json({ error: 'Failed to send email' });
-  }
-});
+    };
 
-const PORT = process.env.PORT || 3012;
-server.listen(PORT, () => {
-  console.log(`Cloud server running on port ${PORT}`);
+    const response = await sgMail.send(msg);
+
+    console.log("SUCCESS:", response);
+
+    res.json({ success: true });
+
+  } catch (err) {
+
+    console.error("FULL ERROR:");
+    console.error(JSON.stringify(err.response?.body, null, 2));
+
+    res.status(500).json({
+      error: 'Failed to send email'
+    });
+  }
 });
