@@ -54,7 +54,7 @@ export default function ViewPicture() {
             const photoResponse = await fetch(`${SERVER_URL}/download/${currentCode}`);
             
             if (!photoResponse.ok) {
-                setSendStatus('❌ Photo not found');
+                setSendStatus('Photo not found');
                 setSending(false);
                 return;
             }

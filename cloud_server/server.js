@@ -139,11 +139,10 @@ app.post('/send-email', async (req, res) => {
   try {
     await sgMail.send({
       to: email,
-      from: 'noreply@yourdomain.com', // Change this to your verified sender email
-      subject: 'Your Photo Booth Picture',
+      from: 'idalee.fjelstrenius@gmail.com',
+      subject: 'Your Photo Booth Picture', //<p>Your photo code: <strong>${code}</strong></p>
       html: `
         <h2>Here's your photo!</h2>
-        <p>Your photo code: <strong>${code}</strong></p>
         <img src="${photoUrl}" style="max-width: 600px;" />
       `
     });
