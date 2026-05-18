@@ -136,13 +136,12 @@ app.post('/send-email', async (req, res) => {
   const { email, photoUrl, code } = req.body;
 
   try {
-    const msg = {
+    const msg = { //<p>Your photo code: <strong>${code || 'N/A'}</strong></p>
       to: email,
       from: 'idalee.fjelstrenius@gmail.com',
       subject: 'Your Photo Booth Picture',
       html: `
         <h2>Here's your photo!</h2>
-        <p>Your photo code: <strong>${code || 'N/A'}</strong></p>
         <img src="${photoUrl}" style="max-width: 600px;" />
       `
     };
