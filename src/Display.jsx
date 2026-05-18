@@ -53,9 +53,13 @@ export default function Display() {
       <div style={{...infoStyles.infoBox, position: 'absolute', bottom: '40px', zIndex: 10}}>
       <h3 style={infoStyles.infoTitle}>Photo Storage Information</h3>
       <p style={infoStyles.infoText}>
-      🔒 Photos are kept for 48 hours and then automatically deleted.
+      Photos are kept for 48 hours and then automatically deleted.
+      </p>
+      <p style={infoStyles.infoText}>
+      We only use your email to send this photo. We don't store it.
       </p>
       <button 
+      
       style={infoStyles.closeButton}
       onClick={() => setShowInfo(false)}
       >
