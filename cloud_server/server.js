@@ -5,7 +5,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import { WebSocketServer } from 'ws';
 import { createServer } from 'http';
 import dotenv from 'dotenv';
-import sgMail from '@sendgrid/mail';  // Add this import
+import sgMail from '@sendgrid/mail';
 
 dotenv.config();
 
@@ -132,35 +132,35 @@ app.get('/latest', (req, res) => {
   res.json({ code: lastCode, url: entry.url });
 });
 
-// Add the email sending route here
 app.post('/send-email', async (req, res) => {
-  const { email, photoUrl } = req.body;
+  const { email, photoUrl, code } = req.body;
 
   try {
-
     const msg = {
       to: email,
       from: 'idalee.fjelstrenius@gmail.com',
       subject: 'Your Photo Booth Picture',
       html: `
         <h2>Here's your photo!</h2>
+        <p>Your photo code: <strong>${code || 'N/A'}</strong></p>
         <img src="${photoUrl}" style="max-width: 600px;" />
       `
     };
 
-    const response = await sgMail.send(msg);
-
-    console.log("SUCCESS:", response);
-
+    await sgMail.send(msg);
+    console.log(`Email sent successfully to ${email}`);
     res.json({ success: true });
 
   } catch (err) {
-
-    console.error("FULL ERROR:");
-    console.error(JSON.stringify(err.response?.body, null, 2));
-
-    res.status(500).json({
-      error: 'Failed to send email'
-    });
+    console.error("Email send error:", err);
+    if (err.response) {
+      console.error(JSON.stringify(err.response.body, null, 2));
+    }
+    res.status(500).json({ error: 'Failed to send email' });
   }
+});
+
+const PORT = process.env.PORT || 3012;
+server.listen(PORT, () => {
+  console.log(`Cloud server running on port ${PORT}`);
 });
